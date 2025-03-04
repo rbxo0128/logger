@@ -19,8 +19,9 @@ jobs:
 
       - name: Compile and run Java LLM script
         run: |
-          javac Application.java
-          java Application
+          mkdir -p out
+          javac -d out src/Application.java
+          java -cp out Application
         
         env:
           PROMPT: ${{ vars.PROMPT }}
