@@ -5,12 +5,15 @@ import util.logger.MyLogger;
 import util.secret.NoEnvExcedption;
 
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.concurrent.*;
 
 public class Application {
     public static void main(String[] args) throws NoEnvExcedption, InterruptedException, IOException, ExecutionException {
         MyLogger logger = MyLogger.getLogger();
-        Slack slack = new Slack();
+//        Slack slack = new Slack();
         LLM llm = new LLM();
 
         long startTime = System.currentTimeMillis();
@@ -46,11 +49,21 @@ public class Application {
         String reasoningResult = reasoningFuture.get();
         String reasoningResult2 = reasoningFuture2.get();
 
-        slack.sendMessage(reasoningResult, reasoningResult2, imageResult);
+//        slack.sendMessage(reasoningResult, reasoningResult2, imageResult);
 
         executor.shutdown();
 
         logger.info("FINISH! %d".formatted(System.currentTimeMillis() - startTime));
+
+        String combinedOutput = "# Generated Results\n\n" +
+                "## Image Result\n" +
+                imageResult + "\n\n" +
+                "## Detailed Description\n" +
+                reasoningResult + "\n\n" +
+                "## Job Tips\n" +
+                reasoningResult2;
+
+        Files.write(Paths.get("docs/output.md"), combinedOutput.getBytes(StandardCharsets.UTF_8));
     }
 }
 
