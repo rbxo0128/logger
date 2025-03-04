@@ -21,6 +21,12 @@ jobs:
         run: |
           javac Application.java
           java Application
+        
+        env:
+          PROMPT: ${{ vars.PROMPT }}
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          SLACK_BOT_URL : ${{ secrets.SLACK_BOT_URL}}
+          TOGETHER_API_KEY : ${{ secrets.TOGETHER_API_KEY}}
 
       - name: Commit and push changes
         uses: EndBug/add-and-commit@v9
