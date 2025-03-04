@@ -20,8 +20,8 @@ jobs:
       - name: Compile and run Java LLM script
         run: |
           mkdir -p out
-          javac -d out src/Application.java
-          java -cp out Application
+          mkdir -p out
+          javac -d out $(find src -name "*.java")
         
         env:
           PROMPT: ${{ vars.PROMPT }}
