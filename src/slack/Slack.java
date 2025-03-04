@@ -20,15 +20,12 @@ public class Slack {
         secret = MySecret.getSecret();
         webClient = WebClient.getWebClient();
     }
-
-    public void sendMessage(String msg) throws NoEnvExcedption {
+    private void handleRequest(String body) throws NoEnvExcedption {
         String result = "";
         HashMap<String,String> map = new HashMap<>();
         map.put("url", secret.getSecret(SecretCategory.SLACK_BOT_URL.key));
         map.put("method", "POST");
-        map.put("body", """
-                {"text": "%s"}
-                """.formatted(msg));
+        map.put("body", body);
         try {
             result = webClient.sendRequest( webClient.makeRequest(map));
         } catch (Exception e) {
@@ -36,4 +33,20 @@ public class Slack {
         }
         logger.info(result);
     }
+
+    public void sendMessage(String title, String msg, String url) throws NoEnvExcedption {
+        handleRequest("""
+            {"attachments": [{
+                "title": "%s",
+                "text": "%s",
+                "image_url": "%s"
+            }]}
+        """.formatted(title ,msg, url));
+    }
+
+    public void sendMessage(String msg) throws NoEnvExcedption {
+        handleRequest("""
+        {"text": "%s"}
+        """.formatted(msg));
+}
 }

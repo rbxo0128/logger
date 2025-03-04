@@ -31,22 +31,22 @@ public class MyLogger implements ILogger {
 
     @Override
     public void debug(String msg) {
-        logger.log(Level.INFO, msg);
+        logger.fine(msg);
     }
 
     @Override
     public void info(String msg) {
-        logger.log(Level.INFO, msg);
+        logger.info(msg);
     }
 
     @Override
     public void warn(String msg) {
-        logger.log(Level.WARNING, msg);
+        logger.warning(msg);
     }
 
     @Override
     public void error(String msg) {
-        logger.log(Level.SEVERE, msg);
+        logger.severe(msg);
     }
 }
 
